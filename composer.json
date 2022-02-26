@@ -1,0 +1,61 @@
+{
+    "name": "ziiframework/integrations",
+    "description": "zii-framework integrations",
+    "type": "library",
+    "keywords": [
+        "zii-framework",
+        "integrations"
+    ],
+    "homepage": "https://github.com/ziiframework/integrations",
+    "license": "BSD-3-Clause",
+    "support": {
+        "source": "https://github.com/ziiframework/integrations",
+        "issues": "https://github.com/ziiframework/integrations/issues"
+    },
+    "authors": [
+        {
+            "name": "charescape",
+            "homepage": "https://github.com/charescape"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=7.4.0",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "charescape/php-functions": "1.0.x-dev",
+        "symfony/string": "^5.4",
+        "ziiframework/zii": ">=3.5.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "config": {
+        "platform": {
+            "php": "7.4"
+        },
+        "optimize-autoloader": true,
+        "sort-packages": true,
+        "allow-plugins": {
+            "ziiframework/composer": true
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Zii\\Integrations\\": "src/"
+        }
+    },
+    "scripts": {
+        "redo-install": [
+            "rm -f composer.lock",
+            "@composer self-update -vvv",
+            "@composer install -vvv"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "4.0.x-dev"
+        }
+    }
+}

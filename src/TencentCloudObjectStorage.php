@@ -58,7 +58,7 @@ final class TencentCloudObjectStorage
     }
 
     // step 6
-    public function makeAuthorization(): array
+    public function generateAuthorization(): array
     {
         return [
             'policy' => base64_encode($this->preparePolicy()),

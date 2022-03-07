@@ -26,7 +26,7 @@
         "ext-mbstring": "*",
         "charescape/php-functions": "1.0.x-dev",
         "symfony/string": "^5.4",
-        "ziiframework/zii": ">=3.5.0"
+        "ziiframework/zii": ">=3.5.25"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5"

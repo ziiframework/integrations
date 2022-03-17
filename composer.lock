@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d05a28fdd946f569ee7ec46a9a35f654",
+    "content-hash": "446beb69d0405fbea4ab94b1c603deb2",
     "packages": [
         {
             "name": "cebe/markdown",
@@ -508,16 +508,16 @@
         },
         {
             "name": "symfony/polyfill-php80",
-            "version": "v1.24.0",
+            "version": "v1.25.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php80.git",
-                "reference": "57b712b08eddb97c762a8caa32c84e037892d2e9"
+                "reference": "4407588e0d3f1f52efb65fbe92babe41f37fe50c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/57b712b08eddb97c762a8caa32c84e037892d2e9",
-                "reference": "57b712b08eddb97c762a8caa32c84e037892d2e9",
+                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/4407588e0d3f1f52efb65fbe92babe41f37fe50c",
+                "reference": "4407588e0d3f1f52efb65fbe92babe41f37fe50c",
                 "shasum": ""
             },
             "require": {
@@ -571,7 +571,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php80/tree/v1.24.0"
+                "source": "https://github.com/symfony/polyfill-php80/tree/v1.25.0"
             },
             "funding": [
                 {
@@ -587,11 +587,11 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-09-13T13:58:33+00:00"
+            "time": "2022-03-04T08:16:47+00:00"
         },
         {
             "name": "symfony/polyfill-php81",
-            "version": "v1.24.0",
+            "version": "v1.25.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php81.git",
@@ -650,7 +650,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php81/tree/v1.24.0"
+                "source": "https://github.com/symfony/polyfill-php81/tree/v1.25.0"
             },
             "funding": [
                 {
@@ -814,16 +814,16 @@
         },
         {
             "name": "ziiframework/zii",
-            "version": "3.5.23",
+            "version": "3.5.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ziiframework/zii.git",
-                "reference": "d922b33da2a9b5ff43f369713e3787a590e03c32"
+                "reference": "a104f5d9cd9de3bf718629087ae310e52ce3d7ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ziiframework/zii/zipball/d922b33da2a9b5ff43f369713e3787a590e03c32",
-                "reference": "d922b33da2a9b5ff43f369713e3787a590e03c32",
+                "url": "https://api.github.com/repos/ziiframework/zii/zipball/a104f5d9cd9de3bf718629087ae310e52ce3d7ed",
+                "reference": "a104f5d9cd9de3bf718629087ae310e52ce3d7ed",
                 "shasum": ""
             },
             "require": {
@@ -837,7 +837,7 @@
                 "lib-pcre": "*",
                 "php": ">=7.4.0",
                 "symfony/polyfill-php80": "^1.24",
-                "symfony/polyfill-php81": "^1.24",
+                "symfony/polyfill-php81": "^1.25",
                 "ziiframework/composer": ">=3.5.0"
             },
             "require-dev": {
@@ -885,7 +885,7 @@
                 "issues": "https://github.com/ziiframework/zii/issues?state=open",
                 "source": "https://github.com/ziiframework/zii"
             },
-            "time": "2022-02-23T10:26:54+00:00"
+            "time": "2022-03-17T04:11:21+00:00"
         }
     ],
     "packages-dev": [

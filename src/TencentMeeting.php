@@ -38,8 +38,6 @@ final class TencentMeeting
 
     private function makeSignInternal(string $method, string $url, array $headers, string $body): string
     {
-        $method = strtoupper($method);
-
         $url_path_with_query = parse_url($url, PHP_URL_PATH);
         $url_query = parse_url($url, PHP_URL_QUERY);
 

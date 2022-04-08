@@ -15,6 +15,8 @@ final class SymfonyHttpClient
 {
     public static string $requestError;
 
+    public static bool $allowStatusCodeError = false;
+
     public static function httpGet(string $url, array $options = [], bool $toArray = true)
     {
         return self::requestInternal('GET', $url, $options, $toArray);
@@ -43,9 +45,11 @@ final class SymfonyHttpClient
             return null;
         }
 
-        if ($statusCode < 200 || $statusCode >= 300) {
-            self::$requestError = 'Status Code Error';
-            return null;
+        if (!self::$allowStatusCodeError) {
+            if ($statusCode < 200 || $statusCode >= 300) {
+                self::$requestError = 'Status Code Error';
+                return null;
+            }
         }
 
         try {

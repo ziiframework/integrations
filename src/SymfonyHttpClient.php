@@ -15,19 +15,27 @@ final class SymfonyHttpClient
 {
     public static string $requestError;
 
-    public static bool $allowStatusCodeError = false;
-
     public static function httpGet(string $url, array $options = [], bool $toArray = true)
     {
-        return self::requestInternal('GET', $url, $options, $toArray);
+        return self::requestInternal('GET', $url, $options, $toArray, true);
     }
 
     public static function httpPost(string $url, array $options = [], bool $toArray = true)
     {
-        return self::requestInternal('POST', $url, $options, $toArray);
+        return self::requestInternal('POST', $url, $options, $toArray, true);
     }
 
-    private static function requestInternal(string $method, string $url, array $options = [], bool $toArray = true)
+    public static function httpLaxGet(string $url, array $options = [], bool $toArray = true)
+    {
+        return self::requestInternal('GET', $url, $options, $toArray, false);
+    }
+
+    public static function httpLaxPost(string $url, array $options = [], bool $toArray = true)
+    {
+        return self::requestInternal('POST', $url, $options, $toArray, false);
+    }
+
+    private static function requestInternal(string $method, string $url, array $options, bool $toArray, bool $throw)
     {
         $client = HttpClient::create();
 
@@ -45,7 +53,7 @@ final class SymfonyHttpClient
             return null;
         }
 
-        if (!self::$allowStatusCodeError) {
+        if ($throw) {
             if ($statusCode < 200 || $statusCode >= 300) {
                 self::$requestError = 'Status Code Error';
                 return null;
@@ -53,7 +61,7 @@ final class SymfonyHttpClient
         }
 
         try {
-            return $toArray ? $resp->toArray() : $resp->getContent();
+            return $toArray ? $resp->toArray($throw) : $resp->getContent($throw);
         } catch (ClientExceptionInterface $e) {
             self::$requestError = 'Invalid Request';
             return null;

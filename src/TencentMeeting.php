@@ -39,9 +39,15 @@ final class TencentMeeting
     private function makeSignInternal(string $method, string $url, array $headers, string $body): string
     {
         $method = strtoupper($method);
-        $uri = parse_url($url, PHP_URL_PATH);
 
-        Assert::stringNotEmpty($uri);
+        $url_path_with_query = parse_url($url, PHP_URL_PATH);
+        $url_query = parse_url($url, PHP_URL_QUERY);
+
+        Assert::true(pf_is_string_filled($url_path_with_query));
+
+        if (pf_is_string_filled($url_query)) {
+            $url_path_with_query .= '?' . $url_query;
+        }
 
         $sh = implode('&', [
             'X-TC-Key=' . $headers['X-TC-Key'],
@@ -49,7 +55,7 @@ final class TencentMeeting
             'X-TC-Timestamp=' . $headers['X-TC-Timestamp'],
         ]);
 
-        $request = "{$method}\n{$sh}\n{$uri}\n{$body}";
+        $request = "{$method}\n{$sh}\n{$url_path_with_query}\n{$body}";
 
         return base64_encode(hash_hmac('sha256', $request, $this->accessKeySecret));
     }

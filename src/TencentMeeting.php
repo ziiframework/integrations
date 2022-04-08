@@ -4,22 +4,52 @@ declare(strict_types=1);
 
 namespace Zii\Integrations;
 
+use Webmozart\Assert\Assert;
+
 final class TencentMeeting
 {
+    public string $appId;
+    public string $sdkId;
     public string $accessKeyId;
     public string $accessKeySecret;
 
-    public function sign(array $headers, string $method, ?string $body = null): string
+    public function makeHeaders(array $extra = []): array
+    {
+        return array_merge([
+            'Content-Type' => 'application/json',
+            'X-TC-Key' => $this->accessKeyId,
+            'X-TC-Timestamp' => time(),
+            'X-TC-Nonce' => pf_mt_rand(100000, 999999),
+            'AppId' => $this->appId,
+            'SdkId' => $this->sdkId,
+            'X-TC-Registered' => '1',
+        ], $extra);
+    }
+
+    public function makeSignWithGet(string $url, array $headers): string
+    {
+        return $this->makeSignInternal('GET', $url, $headers, '');
+    }
+
+    public function makeSignWithPost(string $url, array $headers, string $body): string
+    {
+        return $this->makeSignInternal('POST', $url, $headers, $body);
+    }
+
+    private function makeSignInternal(string $method, string $url, array $headers, string $body): string
     {
         $method = strtoupper($method);
+        $uri = parse_url($url, PHP_URL_PATH);
 
-        if ($body === null) {
-            $body = "";
-        }
+        Assert::stringNotEmpty($uri);
 
-        $headers_stringify = "X-TC-Key={$this->accessKeyId}&X-TC-Nonce={$headers['X-TC-Nonce']}&X-TC-Timestamp={$headers['X-TC-Timestamp']}";
+        $sh = implode('&', [
+            'X-TC-Key=' . $headers['X-TC-Key'],
+            'X-TC-Nonce=' . $headers['X-TC-Nonce'],
+            'X-TC-Timestamp=' . $headers['X-TC-Timestamp'],
+        ]);
 
-        $request = "{$method}\n{$headers_stringify}\n{$headers['URI']}\n{$body}";
+        $request = "{$method}\n{$sh}\n{$uri}\n{$body}";
 
         return base64_encode(hash_hmac('sha256', $request, $this->accessKeySecret));
     }

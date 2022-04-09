@@ -26,6 +26,16 @@ final class SymfonyHttpClient
         return self::requestInternal('POST', $url, $options, $toArray, true);
     }
 
+    public static function httpPut(string $url, array $options = [], bool $toArray = true)
+    {
+        return self::requestInternal('PUT', $url, $options, $toArray, true);
+    }
+
+    public static function httpPatch(string $url, array $options = [], bool $toArray = true)
+    {
+        return self::requestInternal('PATCH', $url, $options, $toArray, true);
+    }
+
     public static function httpLaxGet(string $url, array $options = [], bool $toArray = true)
     {
         return self::requestInternal('GET', $url, $options, $toArray, false);
@@ -34,6 +44,16 @@ final class SymfonyHttpClient
     public static function httpLaxPost(string $url, array $options = [], bool $toArray = true)
     {
         return self::requestInternal('POST', $url, $options, $toArray, false);
+    }
+
+    public static function httpLaxPut(string $url, array $options = [], bool $toArray = true)
+    {
+        return self::requestInternal('PUT', $url, $options, $toArray, false);
+    }
+
+    public static function httpLaxPatch(string $url, array $options = [], bool $toArray = true)
+    {
+        return self::requestInternal('PATCH', $url, $options, $toArray, false);
     }
 
     private static function requestInternal(string $method, string $url, array $options, bool $toArray, bool $throw)

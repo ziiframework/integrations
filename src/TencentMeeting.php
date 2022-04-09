@@ -18,8 +18,8 @@ final class TencentMeeting
         return array_merge([
             'Content-Type' => 'application/json',
             'X-TC-Key' => $this->accessKeyId,
-            'X-TC-Timestamp' => time(),
-            'X-TC-Nonce' => pf_mt_rand(100000, 999999),
+            'X-TC-Timestamp' => strval(time()),
+            'X-TC-Nonce' => strval(pf_mt_rand(100000, 999999)),
             'AppId' => $this->appId,
             'SdkId' => $this->sdkId,
             'X-TC-Registered' => '1',
@@ -34,6 +34,16 @@ final class TencentMeeting
     public function makeSignWithPost(string $url, array $headers, string $body): string
     {
         return $this->makeSignInternal('POST', $url, $headers, $body);
+    }
+
+    public function makeSignWithPut(string $url, array $headers, string $body): string
+    {
+        return $this->makeSignInternal('PUT', $url, $headers, $body);
+    }
+
+    public function makeSignWithPatch(string $url, array $headers, string $body): string
+    {
+        return $this->makeSignInternal('PATCH', $url, $headers, $body);
     }
 
     private function makeSignInternal(string $method, string $url, array $headers, string $body): string

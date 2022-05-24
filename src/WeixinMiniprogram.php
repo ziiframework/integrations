@@ -67,4 +67,27 @@ final class WeixinMiniprogram extends ClassObject
 
         return null;
     }
+
+    private array $_fetchAccessToken = [];
+
+    public function fetchAccessToken(): ?string
+    {
+        if (isset($this->_fetchAccessToken[$this->appId])) {
+            return $this->_fetchAccessToken[$this->appId];
+        }
+
+        $result = SymfonyHttpClient::httpGet("{$this->entrypoint}/cgi-bin/token", [
+            'query' => [
+                'appid' => $this->appId,
+                'secret' => $this->appSecret,
+                'grant_type' => 'client_credential',
+            ],
+        ]);
+
+        Assert::stringNotEmpty($result['access_token'] ?? null);
+
+        $this->_fetchAccessToken[$this->appId] = $result['access_token'];
+
+        return $this->_fetchAccessToken[$this->appId];
+    }
 }

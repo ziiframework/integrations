@@ -25,7 +25,7 @@
         "ext-json": "*",
         "ext-mbstring": "*",
         "charescape/php-functions": ">=1.1.0",
-        "symfony/http-client": "^5.4||^6.0",
+        "symfony/http-client": "^5.4.16",
         "webmozart/assert": "^1.11",
         "ziiframework/zii": ">=3.5.0"
     },

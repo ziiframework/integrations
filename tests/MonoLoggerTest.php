@@ -23,7 +23,7 @@ class MonoLoggerTest extends TestCase
             $logger->$level("test $level message");
             $this->assertSame(3 + $idx + 1, count(scandir(RUNTIME_DIR)));
 
-            $files = $finder->files()->in(RUNTIME_DIR)->name("$level.*.unit_test.log");
+            $files = $finder->files()->in(RUNTIME_DIR)->name("/$level\.\d{6}\.unit_test\.log$/");
 
             $this->assertSame(1, $files->count());
 

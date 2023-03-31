@@ -34,6 +34,9 @@ class MonoLoggerTest extends TestCase
         dump('after error:', scandir(RUNTIME_DIR));
 
         dump(file_get_contents(RUNTIME_DIR . '/debug.202303.runner.unittest.log'));
+        dump(file_get_contents(RUNTIME_DIR . '/info.202303.runner.unittest.log'));
+        dump(file_get_contents(RUNTIME_DIR . '/warning.202303.runner.unittest.log'));
+        dump(file_get_contents(RUNTIME_DIR . '/error.202303.runner.unittest.log'));
 
         clearstatcache();
         $this->assertTrue(count(scandir(RUNTIME_DIR)) === 7);

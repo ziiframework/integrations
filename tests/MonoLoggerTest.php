@@ -26,14 +26,17 @@ class MonoLoggerTest extends TestCase
             $files = $finder->files()->in(RUNTIME_DIR)->name("$level.*.unit_test.log");
 
             $this->assertSame(1, $files->count());
-            $this->assertStringContainsString(
-                sprintf(
-                    'UnitTest.%s: [test %s message] {"sessionId":"test-session-id","context":null}',
-                    strtoupper($level),
-                    $level
-                ),
-                $files[0]->getContents()
-            );
+
+            foreach ($files as $file) {
+                $this->assertStringContainsString(
+                    sprintf(
+                        'UnitTest.%s: [test %s message] {"sessionId":"test-session-id","context":null}',
+                        strtoupper($level),
+                        $level
+                    ),
+                    $file->getContents()
+                );
+            }
         }
     }
 }

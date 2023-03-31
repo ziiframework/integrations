@@ -2,6 +2,7 @@
 
 namespace yiiunit\integrations;
 
+use Symfony\Component\Finder\Finder;
 use Zii\Integrations\MonoLogger;
 
 class MonoLoggerTest extends TestCase
@@ -16,29 +17,23 @@ class MonoLoggerTest extends TestCase
     public function testLogger()
     {
         $logger = new MonoLogger(RUNTIME_DIR, 'UnitTest', 'test-session-id');
+        $finder = new Finder();
 
-        $logger->debug('test debug message');
-        clearstatcache();
-        dump('after debug:', scandir(RUNTIME_DIR));
+        foreach (['debug', 'info', 'warning', 'error'] as $idx => $level) {
+            $logger->$level("test $level message");
+            $this->assertSame(2 + $idx + 1, count(scandir(RUNTIME_DIR)));
 
-        $logger->info('test info message');
-        clearstatcache();
-        dump('after info:', scandir(RUNTIME_DIR));
+            $files = $finder->files()->name("$level.*.unit_test.log");
 
-        $logger->warning('test warning message');
-        clearstatcache();
-        dump('after warning:', scandir(RUNTIME_DIR));
-
-        $logger->error('test error message');
-        clearstatcache();
-        dump('after error:', scandir(RUNTIME_DIR));
-
-        dump(file_get_contents(RUNTIME_DIR . '/debug.202303.runner.unittest.log'));
-        dump(file_get_contents(RUNTIME_DIR . '/info.202303.runner.unittest.log'));
-        dump(file_get_contents(RUNTIME_DIR . '/warning.202303.runner.unittest.log'));
-        dump(file_get_contents(RUNTIME_DIR . '/error.202303.runner.unittest.log'));
-
-        clearstatcache();
-        $this->assertTrue(count(scandir(RUNTIME_DIR)) === 7);
+            $this->assertSame(1, $files->count());
+            $this->assertStringContainsString(
+                sprintf(
+                    'UnitTest.%s: [test %s message] {"sessionId":"test-session-id","context":null}',
+                    strtoupper($level),
+                    $level
+                ),
+                $files[0]->getContents()
+            );
+        }
     }
 }

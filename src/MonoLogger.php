@@ -35,7 +35,7 @@ final class MonoLogger
         $inflector = InflectorFactory::createForLanguage(Language::ENGLISH)->build();
 
         $uname = pf_posix_username('nobody');
-        $filename = $inflector->urlize($this->_category);
+        $filename = $inflector->tableize($this->_category);
         $date = date('Ym');
 
         $this->_logger = new Logger(

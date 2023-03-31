@@ -24,15 +24,21 @@ final class MonoLogger
         $this->_sessionId = $sessionId;
     }
 
+    private ?Logger $_logger = null;
+
     private function logger(): Logger
     {
+        if ($this->_logger !== null) {
+            return $this->_logger;
+        }
+
         $inflector = InflectorFactory::createForLanguage(Language::ENGLISH)->build();
 
         $uname = pf_posix_username('nobody');
         $filename = $inflector->urlize($this->_category);
         $date = date('Ym');
 
-        return new Logger(
+        $this->_logger = new Logger(
             $this->_category,
             [
                 new StreamHandler($this->_dir . sprintf('/debug.%s.%s.%s.log',   $date, $uname, $filename), Logger::DEBUG, true),
@@ -43,6 +49,8 @@ final class MonoLogger
             [],
             new DateTimeZone(Yii::$app->timeZone)
         );
+
+        return $this->_logger;
     }
 
     /**

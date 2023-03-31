@@ -1,11 +1,8 @@
 {
     "name": "ziiframework/integrations",
-    "description": "zii-framework integrations",
+    "description": "",
     "type": "library",
-    "keywords": [
-        "zii-framework",
-        "integrations"
-    ],
+    "keywords": [],
     "homepage": "https://github.com/ziiframework/integrations",
     "license": "BSD-3-Clause",
     "support": {

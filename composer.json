@@ -29,7 +29,8 @@
         "ziiframework/zii": ">=3.5.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "^8.5",
+        "symfony/var-dumper": "*"
     },
     "config": {
         "platform": {
@@ -44,6 +45,11 @@
     "autoload": {
         "psr-4": {
             "Zii\\Integrations\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "yiiunit\\integrations\\": "tests/"
         }
     },
     "scripts": {

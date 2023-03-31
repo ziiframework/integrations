@@ -38,6 +38,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
             'id' => 'testapp',
             'basePath' => __DIR__,
             'vendorPath' => dirname(__DIR__) . '/vendor',
+            'timeZone' => 'Asia/Shanghai',
         ], $config));
     }
 
@@ -47,6 +48,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
             'id' => 'testapp',
             'basePath' => __DIR__,
             'vendorPath' => dirname(__DIR__) . '/vendor',
+            'timeZone' => 'Asia/Shanghai',
             'components' => [
                 'request' => [
                     'cookieValidationKey' => 'wefJDF8sfdsfSDefwqdxj9oqwefJDF8sfdsfSDefwqdxj9oq',

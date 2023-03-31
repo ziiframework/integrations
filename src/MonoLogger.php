@@ -35,9 +35,9 @@ final class MonoLogger
         return new Logger(
             $this->_category,
             [
-                new StreamHandler($this->_dir . sprintf('/debug.%s.%s.%s.log',   $date, $uname, $filename), Logger::DEBUG, false),
-                new StreamHandler($this->_dir . sprintf('/info.%s.%s.%s.log',    $date, $uname, $filename), Logger::INFO, false),
-                new StreamHandler($this->_dir . sprintf('/warning.%s.%s.%s.log', $date, $uname, $filename), Logger::WARNING, false),
+                new StreamHandler($this->_dir . sprintf('/debug.%s.%s.%s.log',   $date, $uname, $filename), Logger::DEBUG, true),
+                new StreamHandler($this->_dir . sprintf('/info.%s.%s.%s.log',    $date, $uname, $filename), Logger::INFO, true),
+                new StreamHandler($this->_dir . sprintf('/warning.%s.%s.%s.log', $date, $uname, $filename), Logger::WARNING, true),
                 new StreamHandler($this->_dir . sprintf('/error.%s.%s.%s.log',   $date, $uname, $filename), Logger::ERROR, true),
             ],
             [],

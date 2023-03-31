@@ -11,7 +11,7 @@ use Monolog\Logger;
 use Yii;
 use Doctrine\Inflector\InflectorFactory;
 
-abstract class MonoLogger
+final class MonoLogger
 {
     private string $_dir;
     private string $_category;

@@ -37,7 +37,7 @@ class MonoLoggerTest extends TestCase
             );
         }
 
-        // before fs->remove()
+        // avoid "resource busy"
         $logger->close();
 
         $fs = new Filesystem();

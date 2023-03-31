@@ -13,6 +13,13 @@ class MonoLoggerTest extends TestCase
         $this->mockApplication();
     }
 
+    protected function tearDown(): void
+    {
+        $this->destroyApplication();
+
+        parent::tearDown();
+    }
+
     public function testLogger()
     {
         $logger = new MonoLogger(RUNTIME_DIR, 'UnitTest', 'test-session-id');

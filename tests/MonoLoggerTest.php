@@ -6,6 +6,13 @@ use Zii\Integrations\MonoLogger;
 
 class MonoLoggerTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->mockApplication();
+    }
+
     public function testLogger()
     {
         $logger = new MonoLogger(RUNTIME_DIR, 'UnitTest', 'test-session-id');

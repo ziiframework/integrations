@@ -17,7 +17,7 @@ final class SymfonyHttpClient
     public static string $requestErrorDebug;
 
     /**
-     * @deprecated since 3.5.0, use toArrayGet() instead.
+     * @deprecated since 3.6.0, use toArrayGet() instead.
      */
     public static function httpGet(string $url, array $options = [], bool $toArray = true)
     {
@@ -25,7 +25,7 @@ final class SymfonyHttpClient
     }
 
     /**
-     * @deprecated since 3.5.0, use toArrayPost() instead.
+     * @deprecated since 3.6.0, use toArrayPost() instead.
      */
     public static function httpPost(string $url, array $options = [], bool $toArray = true)
     {
@@ -33,7 +33,7 @@ final class SymfonyHttpClient
     }
 
     /**
-     * @deprecated since 3.5.0
+     * @deprecated since 3.6.0
      */
     public static function httpPut(string $url, array $options = [], bool $toArray = true)
     {
@@ -41,7 +41,7 @@ final class SymfonyHttpClient
     }
 
     /**
-     * @deprecated since 3.5.0
+     * @deprecated since 3.6.0
      */
     public static function httpPatch(string $url, array $options = [], bool $toArray = true)
     {
@@ -49,7 +49,7 @@ final class SymfonyHttpClient
     }
 
     /**
-     * @deprecated since 3.5.0, use toArrayLaxGet() instead.
+     * @deprecated since 3.6.0, use toArrayLaxGet() instead.
      */
     public static function httpLaxGet(string $url, array $options = [], bool $toArray = true)
     {
@@ -57,7 +57,7 @@ final class SymfonyHttpClient
     }
 
     /**
-     * @deprecated since 3.5.0, use toArrayLaxPost() instead.
+     * @deprecated since 3.6.0, use toArrayLaxPost() instead.
      */
     public static function httpLaxPost(string $url, array $options = [], bool $toArray = true)
     {
@@ -65,7 +65,7 @@ final class SymfonyHttpClient
     }
 
     /**
-     * @deprecated since 3.5.0
+     * @deprecated since 3.6.0
      */
     public static function httpLaxPut(string $url, array $options = [], bool $toArray = true)
     {
@@ -73,7 +73,7 @@ final class SymfonyHttpClient
     }
 
     /**
-     * @deprecated since 3.5.0
+     * @deprecated since 3.6.0
      */
     public static function httpLaxPatch(string $url, array $options = [], bool $toArray = true)
     {

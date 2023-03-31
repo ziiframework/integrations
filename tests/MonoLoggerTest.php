@@ -21,7 +21,7 @@ class MonoLoggerTest extends TestCase
 
         foreach (['debug', 'info', 'warning', 'error'] as $idx => $level) {
             $logger->$level("test $level message");
-            $this->assertSame(2 + $idx + 1, count(scandir(RUNTIME_DIR)));
+            $this->assertSame(3 + $idx + 1, count(scandir(RUNTIME_DIR)));
 
             $files = $finder->files()->name("$level.*.unit_test.log");
 

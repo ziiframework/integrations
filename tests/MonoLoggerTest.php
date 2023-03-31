@@ -33,6 +33,8 @@ class MonoLoggerTest extends TestCase
         clearstatcache();
         dump('after error:', scandir(RUNTIME_DIR));
 
+        dump(file_get_contents(RUNTIME_DIR . '/debug.202303.runner.unittest.log'));
+
         clearstatcache();
         $this->assertTrue(count(scandir(RUNTIME_DIR)) === 7);
     }

@@ -21,7 +21,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.4.0",
+        "php": ">=7.4.5",
         "ext-json": "*",
         "ext-mbstring": "*",
         "charescape/php-functions": ">=1.1.0",

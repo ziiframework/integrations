@@ -2,7 +2,7 @@
 
 namespace yiiunit\integrations;
 
-use Symfony\Component\Finder\Finder;
+use Symfony\Component\Filesystem\Filesystem;
 use Zii\Integrations\MonoLogger;
 
 class MonoLoggerTest extends TestCase
@@ -16,27 +16,31 @@ class MonoLoggerTest extends TestCase
 
     public function testLogger()
     {
-        $logger = new MonoLogger(RUNTIME_DIR, 'UnitTest', 'test-session-id');
-        $finder = new Finder();
+        $dir = RUNTIME_DIR . '/' . time() . '_' . random_int(111_111, 999_999);
+
+        $logger = new MonoLogger($dir, 'UnitTest', 'test-session-id');
+
+        $uname = pf_posix_username('nobody');
+        $date = date('Ym');
 
         foreach (['debug', 'info', 'warning', 'error'] as $idx => $level) {
             $logger->$level("test $level message");
-            $this->assertSame(3 + $idx + 1, count(scandir(RUNTIME_DIR)));
+            $this->assertSame(2 + $idx + 1, count(scandir($dir)));
 
-            $files = $finder->files()->in(RUNTIME_DIR)->name("/$level\.\d{6}\.unit_test\.log$/");
-
-            $this->assertSame(1, $files->count());
-
-            foreach ($files as $file) {
-                $this->assertStringContainsString(
-                    sprintf(
-                        'UnitTest.%s: [test %s message] {"sessionId":"test-session-id","context":null}',
-                        strtoupper($level),
-                        $level
-                    ),
-                    $file->getContents()
-                );
-            }
+            $this->assertStringContainsString(
+                sprintf(
+                    'UnitTest.%s: [test %s message] {"sessionId":"test-session-id","context":null}',
+                    strtoupper($level),
+                    $level
+                ),
+                file_get_contents($dir . "/$level.$date.$uname.unit-test.log")
+            );
         }
+
+        // before fs->remove()
+        $logger->close();
+
+        $fs = new Filesystem();
+        $fs->remove($dir);
     }
 }

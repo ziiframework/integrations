@@ -76,7 +76,7 @@ class SymfonyHttpTest extends TestCase
 
         $this->assertNull($http_resp);
         $this->assertTrue($sh->hasError());
-        $this->assertInstanceOf(ResponseInterface::class, $sh->getResponse());
+        $this->assertNull($sh->getResponse());
         $this->assertStringContainsString("Could not resolve host: $random_host", $sh->getError());
         $this->assertStringContainsString("* Could not resolve host: $random_host", $sh->getDebug());
         $this->assertStringContainsString("* Closing connection 0", $sh->getDebug());

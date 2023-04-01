@@ -111,6 +111,10 @@ final class SymfonyHttp
      */
     private function requestInternal(string $method, string $url, array $options, bool $toArray, bool $strict)
     {
+        // reset
+        $this->_error = null;
+        $this->_debug = null;
+
         /** @var \Symfony\Component\HttpClient\CurlHttpClient $client */
         $client = HttpClient::create();
 
@@ -126,19 +130,15 @@ final class SymfonyHttp
             $statusCode = $_response->getStatusCode();
         } catch (TransportExceptionInterface $e) {
             $this->_error = $e->getMessage();
-            $this->_debug = $_response->getInfo('debug');
+            $this->setDebug($_response->getInfo('debug'));
             return null;
-        }
-
-        if ($this->_enableDebugOutput) {
-            dump($_response->getInfo('debug'));
         }
 
         $this->_response = $_response;
 
         if ($statusCode !== 200) {
             $this->_error = "Invalid HTTP status code: $statusCode";
-            $this->_debug = $_response->getInfo('debug');
+            $this->setDebug($_response->getInfo('debug'));
             return null;
         }
 
@@ -147,7 +147,7 @@ final class SymfonyHttp
                 return $_response->toArray($strict);
             } catch (ClientExceptionInterface|RedirectionExceptionInterface|ServerExceptionInterface|TransportExceptionInterface|DecodingExceptionInterface $e) {
                 $this->_error = $e->getMessage();
-                $this->_debug = $_response->getInfo('debug');
+                $this->setDebug($_response->getInfo('debug'));
                 return null;
             }
         } else {
@@ -155,7 +155,7 @@ final class SymfonyHttp
                 return $_response->getContent($strict);
             } catch (ClientExceptionInterface|RedirectionExceptionInterface|ServerExceptionInterface|TransportExceptionInterface $e) {
                 $this->_error = $e->getMessage();
-                $this->_debug = $_response->getInfo('debug');
+                $this->setDebug($_response->getInfo('debug'));
                 return null;
             }
         }
@@ -188,5 +188,14 @@ final class SymfonyHttp
     public function getDebug(): ?string
     {
         return $this->_debug;
+    }
+
+    private function setDebug(?string $value): void
+    {
+        $this->_debug = $value;
+
+        if ($this->_enableDebugOutput) {
+            dump($value);
+        }
     }
 }

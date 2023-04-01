@@ -10,6 +10,7 @@ use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 final class SymfonyHttp
 {
@@ -105,44 +106,54 @@ final class SymfonyHttp
         $client = HttpClient::create();
 
         try {
-            /** @var \Symfony\Component\HttpClient\Response\CurlResponse $http_resp */
-            $http_resp = $client->request($method, $url, array_merge($this->initOptions, $options));
+            /** @var \Symfony\Component\HttpClient\Response\CurlResponse $_response */
+            $_response = $client->request($method, $url, array_merge($this->initOptions, $options));
         } catch (TransportExceptionInterface $e) {
             $this->_error = $e->getMessage();
             return null;
         }
 
+        $this->_response = $_response;
+
         try {
-            $statusCode = $http_resp->getStatusCode();
+            $statusCode = $_response->getStatusCode();
         } catch (TransportExceptionInterface $e) {
             $this->_error = $e->getMessage();
-            $this->_debug = $http_resp->getInfo('debug');
+            $this->_debug = $_response->getInfo('debug');
             return null;
         }
 
         if ($statusCode !== 200) {
             $this->_error = "Invalid HTTP status code: $statusCode";
-            $this->_debug = $http_resp->getInfo('debug');
+            $this->_debug = $_response->getInfo('debug');
             return null;
         }
 
         if ($toArray) {
             try {
-                return $http_resp->toArray($strict);
+                return $_response->toArray($strict);
             } catch (ClientExceptionInterface|RedirectionExceptionInterface|ServerExceptionInterface|TransportExceptionInterface|DecodingExceptionInterface $e) {
                 $this->_error = $e->getMessage();
-                $this->_debug = $http_resp->getInfo('debug');
+                $this->_debug = $_response->getInfo('debug');
                 return null;
             }
         } else {
             try {
-                return $http_resp->getContent($strict);
+                return $_response->getContent($strict);
             } catch (ClientExceptionInterface|RedirectionExceptionInterface|ServerExceptionInterface|TransportExceptionInterface $e) {
                 $this->_error = $e->getMessage();
-                $this->_debug = $http_resp->getInfo('debug');
+                $this->_debug = $_response->getInfo('debug');
                 return null;
             }
         }
+    }
+
+
+    private ?ResponseInterface $_response = null;
+
+    public function getResponse(): ?ResponseInterface
+    {
+        return $this->_response;
     }
 
 

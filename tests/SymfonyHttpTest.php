@@ -2,6 +2,7 @@
 
 namespace yiiunit\integrations;
 
+use Symfony\Contracts\HttpClient\ResponseInterface;
 use Zii\Integrations\SymfonyHttp;
 
 class SymfonyHttpTest extends TestCase
@@ -13,6 +14,7 @@ class SymfonyHttpTest extends TestCase
         // toArrayGET
         $http_resp = $sh->toArrayGET('/anything');
         $this->assertFalse($sh->hasError());
+        $this->assertInstanceOf(ResponseInterface::class, $sh->getResponse());
         $this->assertSame('https://httpbin.org/anything', $http_resp['url']);
         $this->assertSame('GET', $http_resp['method']);
 
@@ -24,6 +26,7 @@ class SymfonyHttpTest extends TestCase
         // toArrayPOST
         $http_resp = $sh->toArrayPOST('/anything');
         $this->assertFalse($sh->hasError());
+        $this->assertInstanceOf(ResponseInterface::class, $sh->getResponse());
         $this->assertSame('POST', $http_resp['method']);
 
         // toArrayPOST with json
@@ -71,6 +74,7 @@ class SymfonyHttpTest extends TestCase
 
         $this->assertNull($http_resp);
         $this->assertTrue($sh->hasError());
+        $this->assertNull($sh->getResponse());
         $this->assertStringContainsString("Could not resolve host: $random_host", $sh->getError());
         $this->assertStringContainsString("* Could not resolve host: $random_host", $sh->getDebug());
         $this->assertStringContainsString("* Closing connection 0", $sh->getDebug());
@@ -78,6 +82,7 @@ class SymfonyHttpTest extends TestCase
         $http_resp = $sh->toArrayGET('https://www.microsoft.com/ajsdkjasndknaskdnaslkdlas');
         $this->assertNull($http_resp);
         $this->assertTrue($sh->hasError());
+        $this->assertInstanceOf(ResponseInterface::class, $sh->getResponse());
         $this->assertSame("Invalid HTTP status code: 404", $sh->getError());
         $this->assertStringContainsString("* Connected to www.microsoft.com", $sh->getDebug());
     }

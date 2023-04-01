@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Zii\Integrations;
 
 use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Component\HttpClient\Response\CurlResponse;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -14,23 +13,48 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class SymfonyHttp
 {
-    public function toArrayGET(string $url, array $options = [], bool $strict = true): ?array
+    private array $initOptions = [];
+
+    public function __construct(string $base_uri = null)
     {
+        if ($base_uri !== null) {
+            $this->initOptions['base_uri'] = $base_uri;
+        }
+    }
+
+    public function toArrayGET(string $url, array $query = [], array $options = [], bool $strict = true): ?array
+    {
+        if (count($query) !== 0) {
+            $options['query'] = $query;
+        }
+
         return $this->requestInternal('GET', $url, $options, true, $strict);
     }
 
-    public function toArrayPOST(string $url, array $options = [], bool $strict = true): ?array
+    public function toArrayPOST(string $url, array $json = [], array $options = [], bool $strict = true): ?array
     {
+        if (count($json) !== 0) {
+            $options['json'] = $json;
+        }
+
         return $this->requestInternal('POST', $url, $options, true, $strict);
     }
 
-    public function toStringGET(string $url, array $options = [], bool $strict = true): ?string
+    public function toStringGET(string $url, array $query = [], array $options = [], bool $strict = true): ?string
     {
+        if (count($query) !== 0) {
+            $options['query'] = $query;
+        }
+
         return $this->requestInternal('GET', $url, $options, false, $strict);
     }
 
-    public function toStringPOST(string $url, array $options = [], bool $strict = true): ?string
+    public function toStringPOST(string $url, array $json = [], array $options = [], bool $strict = true): ?string
     {
+        if (count($json) !== 0) {
+            $options['json'] = $json;
+        }
+
         return $this->requestInternal('POST', $url, $options, false, $strict);
     }
 
@@ -39,11 +63,12 @@ final class SymfonyHttp
      */
     private function requestInternal(string $method, string $url, array $options, bool $toArray, bool $strict)
     {
+        /** @var \Symfony\Component\HttpClient\CurlHttpClient $client */
         $client = HttpClient::create();
 
         try {
-            /** @var CurlResponse $http_resp */
-            $http_resp = $client->request($method, $url, $options);
+            /** @var \Symfony\Component\HttpClient\Response\CurlResponse $http_resp */
+            $http_resp = $client->request($method, $url, array_merge($this->initOptions, $options));
         } catch (TransportExceptionInterface $e) {
             $this->_error = $e->getMessage();
             return null;

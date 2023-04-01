@@ -33,11 +33,22 @@ final class SymfonyHttp
 
     public function toArrayPOST(string $url, array $json = [], array $options = [], bool $strict = true): ?array
     {
-        if (count($json) !== 0) {
-            $options['json'] = $json;
-        }
+        return $this->internalPOST('POST', $url, $json, $options, true, $strict);
+    }
 
-        return $this->requestInternal('POST', $url, $options, true, $strict);
+    public function toArrayPUT(string $url, array $json = [], array $options = [], bool $strict = true): ?array
+    {
+        return $this->internalPOST('PUT', $url, $json, $options, true, $strict);
+    }
+
+    public function toArrayPATCH(string $url, array $json = [], array $options = [], bool $strict = true): ?array
+    {
+        return $this->internalPOST('PATCH', $url, $json, $options, true, $strict);
+    }
+
+    public function toArrayDELETE(string $url, array $json = [], array $options = [], bool $strict = true): ?array
+    {
+        return $this->internalPOST('DELETE', $url, $json, $options, true, $strict);
     }
 
     public function toStringGET(string $url, array $query = [], array $options = [], bool $strict = true): ?string
@@ -51,11 +62,34 @@ final class SymfonyHttp
 
     public function toStringPOST(string $url, array $json = [], array $options = [], bool $strict = true): ?string
     {
+        return $this->internalPOST('POST', $url, $json, $options, false, $strict);
+    }
+
+    public function toStringPUT(string $url, array $json = [], array $options = [], bool $strict = true): ?string
+    {
+        return $this->internalPOST('PUT', $url, $json, $options, false, $strict);
+    }
+
+    public function toStringPATCH(string $url, array $json = [], array $options = [], bool $strict = true): ?string
+    {
+        return $this->internalPOST('PATCH', $url, $json, $options, false, $strict);
+    }
+
+    public function toStringDELETE(string $url, array $json = [], array $options = [], bool $strict = true): ?string
+    {
+        return $this->internalPOST('DELETE', $url, $json, $options, false, $strict);
+    }
+
+    /**
+     * @return array|string|null
+     */
+    private function internalPOST(string $method, string $url, array $json, array $options, bool $toArray, bool $strict)
+    {
         if (count($json) !== 0) {
             $options['json'] = $json;
         }
 
-        return $this->requestInternal('POST', $url, $options, false, $strict);
+        return $this->requestInternal($method, $url, $options, $toArray, $strict);
     }
 
     /**

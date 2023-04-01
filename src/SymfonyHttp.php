@@ -36,6 +36,14 @@ final class SymfonyHttp
     }
 
 
+    private bool $_displayURL = false;
+
+    public function setDisplayURL(bool $value): void
+    {
+        $this->_displayURL = $value;
+    }
+
+
     public function toArrayGET(string $url, array $query = [], array $options = [], bool $strict = true): ?array
     {
         if (count($query)) {
@@ -135,6 +143,10 @@ final class SymfonyHttp
         }
 
         $this->_response = $_response;
+
+        if ($this->_displayURL) {
+            dump($_response->getInfo('url'));
+        }
 
         if ($statusCode !== 200) {
             $this->_error = "Invalid HTTP status code: $statusCode";

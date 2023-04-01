@@ -122,12 +122,6 @@ final class SymfonyHttp
             return null;
         }
 
-        if ($this->_enableDebugOutput) {
-            dump($_response->getInfo('debug'));
-        }
-
-        $this->_response = $_response;
-
         try {
             $statusCode = $_response->getStatusCode();
         } catch (TransportExceptionInterface $e) {
@@ -135,6 +129,12 @@ final class SymfonyHttp
             $this->_debug = $_response->getInfo('debug');
             return null;
         }
+
+        if ($this->_enableDebugOutput) {
+            dump($_response->getInfo('debug'));
+        }
+
+        $this->_response = $_response;
 
         if ($statusCode !== 200) {
             $this->_error = "Invalid HTTP status code: $statusCode";

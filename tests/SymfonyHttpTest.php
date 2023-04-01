@@ -11,6 +11,8 @@ class SymfonyHttpTest extends TestCase
     {
         $sh = new SymfonyHttp('https://httpbin.org/');
 
+        $sh->setEnableDebugOutput(true);
+
         // toArrayGET
         $http_resp = $sh->toArrayGET('/anything');
         $this->assertFalse($sh->hasError());

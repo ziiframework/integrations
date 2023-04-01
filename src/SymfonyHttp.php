@@ -27,6 +27,15 @@ final class SymfonyHttp
         }
     }
 
+
+    private bool $_enableDebugOutput = false;
+
+    public function setEnableDebugOutput(bool $value): void
+    {
+        $this->_enableDebugOutput = $value;
+    }
+
+
     public function toArrayGET(string $url, array $query = [], array $options = [], bool $strict = true): ?array
     {
         if (count($query)) {
@@ -111,6 +120,10 @@ final class SymfonyHttp
         } catch (TransportExceptionInterface $e) {
             $this->_error = $e->getMessage();
             return null;
+        }
+
+        if ($this->_enableDebugOutput) {
+            dump($_response->getInfo('debug'));
         }
 
         $this->_response = $_response;

@@ -13,7 +13,11 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class SymfonyHttp
 {
-    private array $initOptions = [];
+    private array $initOptions = [
+        'headers' => [
+            'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.54'
+        ],
+    ];
 
     public function __construct(string $base_uri = null)
     {

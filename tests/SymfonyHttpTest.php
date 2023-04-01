@@ -10,7 +10,6 @@ class SymfonyHttpTest extends TestCase
     public function testRequests()
     {
         $sh = new SymfonyHttp('https://httpbin.org/');
-
         $sh->setEnableDebugOutput(true);
 
         // toArrayGET
@@ -71,6 +70,7 @@ class SymfonyHttpTest extends TestCase
         $random_host = 'www.test' . bin2hex(random_bytes(5)) . '.com';
 
         $sh = new SymfonyHttp("https://$random_host/");
+        $sh->setDisplayURL(true);
 
         $http_resp = $sh->toArrayGET('/');
 

@@ -16,30 +16,30 @@ on:
     - cron: '15 1,12 * * *'
 
 env:
-    DEFAULT_COMPOSER_FLAGS: "--no-interaction --ansi"
+  DEFAULT_COMPOSER_FLAGS: "--no-interaction --ansi"
 
 jobs:
-    phpunit:
-        name: PHP ${{ matrix.php }} on ${{ matrix.os }}
-        runs-on: ${{ matrix.os }}
-        strategy:
-            fail-fast: false
-            matrix:
-                os: [ubuntu-latest]
-                php: ['7.4', '8.0', '8.1', '8.2']
+  phpunit:
+    name: PHP ${{ matrix.php }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest ]
+        php: [ '7.4', '8.0', '8.1', '8.2' ]
 
-        steps:
-            - uses: actions/checkout@v3
+    steps:
+      - uses: actions/checkout@v3
 
-            - name: Install PHP
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: ${{ matrix.php }}
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
 
-            - name: Install dependencies
-              run: |
-                rm -f composer.lock
-                composer install $DEFAULT_COMPOSER_FLAGS
+      - name: Install dependencies
+        run: |
+          rm -f composer.lock
+          composer install $DEFAULT_COMPOSER_FLAGS
 
-            - name: PHPUnit
-              run: vendor/bin/phpunit --colors=always
+      - name: PHPUnit
+        run: vendor/bin/phpunit --colors=always

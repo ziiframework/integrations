@@ -24,7 +24,7 @@ final class SymfonyHttp
 
     public function toArrayGET(string $url, array $query = [], array $options = [], bool $strict = true): ?array
     {
-        if (count($query) !== 0) {
+        if (count($query)) {
             $options['query'] = $query;
         }
 
@@ -53,7 +53,7 @@ final class SymfonyHttp
 
     public function toStringGET(string $url, array $query = [], array $options = [], bool $strict = true): ?string
     {
-        if (count($query) !== 0) {
+        if (count($query)) {
             $options['query'] = $query;
         }
 
@@ -85,7 +85,7 @@ final class SymfonyHttp
      */
     private function internalPOST(string $method, string $url, array $json, array $options, bool $toArray, bool $strict)
     {
-        if (count($json) !== 0) {
+        if (count($json)) {
             $options['json'] = $json;
         }
 

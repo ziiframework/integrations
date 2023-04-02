@@ -145,7 +145,13 @@ final class SymfonyHttp
         $this->_response = $_response;
 
         if ($this->_displayURL) {
-            dump($_response->getInfo('http_method'), $_response->getInfo('url'), $_response->getInfo('http_code'));
+            dump(
+                $_response->getInfo('http_method')
+                . ' '
+                . $_response->getInfo('http_code')
+                . ' '
+                . $_response->getInfo('url')
+            );
         }
 
         if ($statusCode !== 200) {

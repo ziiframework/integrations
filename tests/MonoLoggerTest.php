@@ -29,6 +29,7 @@ class MonoLoggerTest extends TestCase
 
             $log_file = $dir . "/$level.$date.$uname.unit-test.log";
 
+            $logger->close();// flush first
             $log_file_contents = file_get_contents($log_file);
 
             // default without GlobalVars
@@ -43,12 +44,12 @@ class MonoLoggerTest extends TestCase
             // set with GlobalVars
             $logger->withGlobalVars(true);
             $logger->$level("test $level message");
+            $logger->close();// flush first
             $log_file_contents = file_get_contents($log_file);
             $this->assertStringContainsString('"__SERVER":{', $log_file_contents);
-            dump($log_file_contents);
         }
 
-        // avoid "resource busy"
+        // release
         $logger->close();
 
         $fs = new Filesystem();

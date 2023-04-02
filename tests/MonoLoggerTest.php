@@ -40,13 +40,12 @@ class MonoLoggerTest extends TestCase
 
             // default without GlobalVars
             $this->assertStringNotContainsString('"__SERVER":{', $get_log_contents());
-            dump($get_log_contents());
+            dump(array_keys($GLOBALS));
 
             // set with GlobalVars
             $logger->withGlobalVars(true);
             $logger->$level("test $level message");
             $this->assertStringContainsString('"__SERVER":{', $get_log_contents());
-            dump($get_log_contents());
         }
 
         // avoid "resource busy"

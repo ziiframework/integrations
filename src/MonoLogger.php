@@ -24,6 +24,12 @@ final class MonoLogger
         $this->_sessionId = $sessionId;
     }
 
+    private bool $_withGlobalVars = false;
+    public function withGlobalVars(bool $value): void
+    {
+        $this->_withGlobalVars = $value;
+    }
+
     private ?Logger $_logger = null;
 
     private function logger(): Logger
@@ -58,6 +64,22 @@ final class MonoLogger
         $this->logger()->close();
     }
 
+    private function build_internal_context($context): array
+    {
+        $result = [];
+
+        if ($this->_withGlobalVars) {
+            foreach ($GLOBALS as $k => $v) {
+                $result["_$k"] = $v;
+            }
+        }
+
+        $result['sessionId'] = $this->_sessionId;
+        $result['context'] = $context;
+
+        return $result;
+    }
+
     /**
      * @param string|int|float $message
      * @param mixed|null $context
@@ -65,7 +87,7 @@ final class MonoLogger
      */
     public function debug($message, $context = null): void
     {
-        $this->logger()->debug('[' . $message . ']', ['sessionId' => $this->_sessionId, 'context' => $context]);
+        $this->logger()->debug('[' . $message . ']', $this->build_internal_context($context));
     }
 
     /**
@@ -75,7 +97,7 @@ final class MonoLogger
      */
     public function info($message, $context = null): void
     {
-        $this->logger()->info('[' . $message . ']', ['sessionId' => $this->_sessionId, 'context' => $context]);
+        $this->logger()->info('[' . $message . ']', $this->build_internal_context($context));
     }
 
     /**
@@ -85,7 +107,7 @@ final class MonoLogger
      */
     public function warning($message, $context = null): void
     {
-        $this->logger()->warning('[' . $message . ']', ['sessionId' => $this->_sessionId, 'context' => $context]);
+        $this->logger()->warning('[' . $message . ']', $this->build_internal_context($context));
     }
 
     /**
@@ -95,6 +117,6 @@ final class MonoLogger
      */
     public function error($message, $context = null): void
     {
-        $this->logger()->error('[' . $message . ']', ['sessionId' => $this->_sessionId, 'context' => $context]);
+        $this->logger()->error('[' . $message . ']', $this->build_internal_context($context));
     }
 }

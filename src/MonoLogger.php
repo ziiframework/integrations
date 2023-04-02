@@ -95,6 +95,8 @@ final class MonoLogger
                     $result["_$k"] = $v;
                 }
             }
+
+            $result['__rawData'] = file_get_contents('php://input');
         }
 
         $result['process'] = $this->_processId;

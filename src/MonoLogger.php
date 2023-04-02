@@ -28,19 +28,19 @@ final class MonoLogger
 
     private string $_dir;
     private string $_category;
-    private string $_sessionId;
+    private string $_processId;
     private array $_logVars = [];
 
     public function __construct(
         string $dir,
         string $category,
-        string $sessionId,
+        string $processId,
         $logVars
     )
     {
         $this->_dir = $dir;
         $this->_category = $category;
-        $this->_sessionId = $sessionId;
+        $this->_processId = $processId;
 
         if ($logVars === true) {
             $this->_logVars = self::DEFAULT_LOG_VARS;
@@ -97,7 +97,7 @@ final class MonoLogger
             }
         }
 
-        $result['sessionId'] = $this->_sessionId;
+        $result['processId'] = $this->_processId;
         $result['context'] = $context;
 
         return $result;

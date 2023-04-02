@@ -13,21 +13,42 @@ use Doctrine\Inflector\InflectorFactory;
 
 final class MonoLogger
 {
+    public const DEFAULT_LOG_VARS = [
+        '_GET',
+        '_POST',
+        '_COOKIE',
+        '_FILES',
+        '_SERVER',
+        '_SESSION',
+        '_ENV',
+        '_REQUEST',
+        'argv',
+        'argc',
+    ];
+
     private string $_dir;
     private string $_category;
     private string $_sessionId;
+    private array $_logVars = [];
 
-    public function __construct(string $dir, string $category, string $sessionId)
+    public function __construct(
+        string $dir,
+        string $category,
+        string $sessionId,
+        $logVars
+    )
     {
         $this->_dir = $dir;
         $this->_category = $category;
         $this->_sessionId = $sessionId;
-    }
 
-    private bool $_withGlobalVars = false;
-    public function withGlobalVars(bool $value): void
-    {
-        $this->_withGlobalVars = $value;
+        if ($logVars === true) {
+            $this->_logVars = self::DEFAULT_LOG_VARS;
+        } elseif ($logVars === false) {
+            $this->_logVars = [];
+        } elseif (is_array($logVars)) {
+            $this->_logVars = $logVars;
+        }
     }
 
     private ?Logger $_logger = null;
@@ -68,22 +89,9 @@ final class MonoLogger
     {
         $result = [];
 
-        $defaultVars = [
-            '_GET',
-            '_POST',
-            '_COOKIE',
-            '_FILES',
-            '_SERVER',
-            '_SESSION',
-            '_ENV',
-            '_REQUEST',
-            'argv',
-            'argc',
-        ];
-
-        if ($this->_withGlobalVars) {
+        if (count($this->_logVars)) {
             foreach ($GLOBALS as $k => $v) {
-                if (in_array($k, $defaultVars, true)) {
+                if (in_array($k, $this->_logVars, true)) {
                     $result["_$k"] = $v;
                 }
             }

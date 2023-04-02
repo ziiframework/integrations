@@ -22,13 +22,12 @@ class MonoLoggerTest extends TestCase
         $date = date('Ym');
 
         foreach (['debug', 'info', 'warning', 'error'] as $idx => $level) {
-            $logger = new MonoLogger($dir, 'UnitTest', 'test-session-id');
+            $log_file = $dir . "/$level.$date.$uname.unit-test.log";
 
-            // default without GlobalVars
+            // without GlobalVars
+            $logger = new MonoLogger($dir, 'UnitTest', 'test-session-id', false);
             $logger->$level("test $level message");
             $this->assertSame(2 + $idx + 1, count(scandir($dir)));
-
-            $log_file = $dir . "/$level.$date.$uname.unit-test.log";
 
             $logger->close();// flush
             $log_file_contents = file_get_contents($log_file);
@@ -41,8 +40,8 @@ class MonoLoggerTest extends TestCase
             $this->assertStringContainsString('"context":null', $log_file_contents);
             $this->assertStringNotContainsString('"__SERVER":{', $log_file_contents);
 
-            // set with GlobalVars
-            $logger->withGlobalVars(true);
+            // with GlobalVars
+            $logger = new MonoLogger($dir, 'UnitTest', 'test-session-id', true);
             $logger->$level("test $level message");
             $logger->close();// flush
             $log_file_contents = file_get_contents($log_file);

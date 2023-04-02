@@ -27,14 +27,26 @@ class MonoLoggerTest extends TestCase
             $logger->$level("test $level message");
             $this->assertSame(2 + $idx + 1, count(scandir($dir)));
 
+            $get_log_contents = fn() => file_get_contents($dir . "/$level.$date.$uname.unit-test.log");
+
             $this->assertStringContainsString(
                 sprintf(
                     'UnitTest.%s: [test %s message] {"sessionId":"test-session-id","context":null}',
                     strtoupper($level),
                     $level
                 ),
-                file_get_contents($dir . "/$level.$date.$uname.unit-test.log")
+                $get_log_contents()
             );
+
+            // default without GlobalVars
+            $this->assertStringNotContainsString('{"__SERVER":', $get_log_contents());
+            dump($get_log_contents);
+
+            // with GlobalVars
+            $logger->withGlobalVars(true);
+            $logger->$level("test $level message");
+            $this->assertStringContainsString('{"__SERVER":', $get_log_contents());
+            dump($get_log_contents);
         }
 
         // avoid "resource busy"

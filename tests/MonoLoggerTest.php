@@ -27,25 +27,25 @@ class MonoLoggerTest extends TestCase
             $logger->$level("test $level message");
             $this->assertSame(2 + $idx + 1, count(scandir($dir)));
 
-            $get_log_contents = fn() => file_get_contents($dir . "/$level.$date.$uname.unit-test.log");
+            $log_file = $dir . "/$level.$date.$uname.unit-test.log";
 
-            $this->assertStringContainsString(
-                sprintf(
-                    'UnitTest.%s: [test %s message] {"sessionId":"test-session-id","context":null}',
-                    strtoupper($level),
-                    $level
-                ),
-                $get_log_contents()
-            );
+            $log_file_contents = file_get_contents($log_file);
 
             // default without GlobalVars
-            $this->assertStringNotContainsString('"__SERVER":{', $get_log_contents());
-            dump(array_keys($GLOBALS));
+            $this->assertStringContainsString(
+                sprintf('UnitTest.%s: [test %s message] {', strtoupper($level), $level),
+                $log_file_contents
+            );
+            $this->assertStringContainsString('"sessionId":"test-session-id"', $log_file_contents);
+            $this->assertStringContainsString('"context":null', $log_file_contents);
+            $this->assertStringNotContainsString('"__SERVER":{', $log_file_contents);
 
             // set with GlobalVars
             $logger->withGlobalVars(true);
             $logger->$level("test $level message");
-            $this->assertStringContainsString('"__SERVER":{', $get_log_contents());
+            $log_file_contents = file_get_contents($log_file);
+            $this->assertStringContainsString('"__SERVER":{', $log_file_contents);
+            dump($log_file_contents);
         }
 
         // avoid "resource busy"

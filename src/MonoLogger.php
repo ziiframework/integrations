@@ -97,7 +97,7 @@ final class MonoLogger
             }
         }
 
-        $result['processId'] = $this->_processId;
+        $result['process'] = $this->_processId;
         $result['context'] = $context;
 
         return $result;

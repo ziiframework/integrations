@@ -68,9 +68,24 @@ final class MonoLogger
     {
         $result = [];
 
+        $defaultVars = [
+            '_GET',
+            '_POST',
+            '_COOKIE',
+            '_FILES',
+            '_SERVER',
+            '_SESSION',
+            '_ENV',
+            '_REQUEST',
+            'argv',
+            'argc',
+        ];
+
         if ($this->_withGlobalVars) {
             foreach ($GLOBALS as $k => $v) {
-                $result["_$k"] = $v;
+                if (in_array($k, $defaultVars, true)) {
+                    $result["_$k"] = $v;
+                }
             }
         }
 

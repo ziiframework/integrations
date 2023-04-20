@@ -181,12 +181,16 @@ final class SimpleExcel
 
     private function setCellValueWithBackgroundColor(int $colIndex, int $rowIndex, $value): void
     {
+        if ($value === null) {
+            $value = '';
+        }
+
         if (is_numeric($value)) {
             $value = (string) $value;
         }
 
         if (!is_string($value)) {
-            throw new Exception('Invalid data type: [value] must be string');
+            throw new Exception('Invalid data type: [value] must be string, ' . gettype($value) . ' given.');
         }
 
         $vc = explode(';;;', $value);

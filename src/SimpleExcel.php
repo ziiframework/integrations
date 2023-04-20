@@ -179,8 +179,16 @@ final class SimpleExcel
         ]);
     }
 
-    private function setCellValueWithBackgroundColor(int $colIndex, int $rowIndex, string $value): void
+    private function setCellValueWithBackgroundColor(int $colIndex, int $rowIndex, $value): void
     {
+        if (is_numeric($value)) {
+            $value = (string) $value;
+        }
+
+        if (!is_string($value)) {
+            throw new Exception('Invalid data type: [value] must be string');
+        }
+
         $vc = explode(';;;', $value);
 
         if (!isset($vc[1]) || !preg_match('/[a-zA-Z\d]{8}/', $vc[1])) {
